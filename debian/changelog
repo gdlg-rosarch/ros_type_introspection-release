@@ -1,0 +1,9 @@
+ros-kinetic-ros-type-introspection (0.2.0-0wily) wily; urgency=high
+
+  * All unit tests pass, but coverage is not very high.
+  * By default is uses the custom string implementation.
+  * Stable (?) API
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Sun, 16 Oct 2016 22:00:00 -0000
+
+
