@@ -2,6 +2,8 @@
  * \file   string.hpp
  * \author Elliot Goodrich
  *
+ * Modified by Davide Faconti
+ *
  * Boost Software License - Version 1.0 - August 17th, 2003
  *
  * Permission is hereby granted, free of charge, to any person or organization
@@ -102,7 +104,7 @@ public:
 
     basic_string(CharT const* string, std::size_t size) {
 
-        static_assert( MAX_SIZE >= 29 && MAX_SIZE <= 63, "Size must be >=29 && <= 63" );
+        static_assert( MAX_SIZE >= 24 && MAX_SIZE <= 63, "Size must be >=24 && <= 63" );
 
         if(size <= sso_capacity) {
             Traits::move(m_data.sso.string, string, size);
