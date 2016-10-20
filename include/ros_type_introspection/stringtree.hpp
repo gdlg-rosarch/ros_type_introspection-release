@@ -1,3 +1,37 @@
+/*********************************************************************
+* Software License Agreement (BSD License)
+*
+*  Copyright 2016 Davide Faconti
+*  All rights reserved.
+*
+*  Redistribution and use in source and binary forms, with or without
+*  modification, are permitted provided that the following conditions
+*  are met:
+*
+*   * Redistributions of source code must retain the above copyright
+*     notice, this list of conditions and the following disclaimer.
+*   * Redistributions in binary form must reproduce the above
+*     copyright notice, this list of conditions and the following
+*     disclaimer in the documentation and/or other materials provided
+*     with the distribution.
+*   * Neither the name of Willow Garage, Inc. nor the names of its
+*     contributors may be used to endorse or promote products derived
+*     from this software without specific prior written permission.
+*
+*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+*  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+*  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+*  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+*  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+*  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+*  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+*  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+*  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+*  POSSIBILITY OF SUCH DAMAGE.
+********************************************************************/
+
 #ifndef STRINGTREE_H
 #define STRINGTREE_H
 
@@ -10,6 +44,9 @@
 
 namespace details{
 
+// If you set this to true, Tree can not be modified
+// once it is created. The main reason is that std::vector will be used to store
+// the children. this is faster but might invalidate the pointer to the node's parent.
 #define STATIC_TREE true
 
 /**
@@ -53,13 +90,15 @@ template <typename T> class Tree : boost::noncopyable
 public:
     Tree(): _root(nullptr,"root") {}
 
+#if !STATIC_TREE // this operation is illegal in a static tree
     /**
      * Add the elements to the tree and return the pointer to the leaf.
      * The leaf correspnds to the last element of concatenated_values in the Tree.
      */
-#if !STATIC_TREE // this operation is illegal in a static tree
+
     template<typename Vect> void insert(const Vect& concatenated_values);
 #endif
+
     /**
      * Find a set of elements in the tree and return the pointer to the leaf.
      * The first element of the concatenated_values should be a root of the Tree.
@@ -67,17 +106,19 @@ public:
      */
     template<typename Vect> const TreeElement<T>* find( const Vect& concatenated_values, bool partial_allowed = false);
 
+    /// Constant pointer to the root of the tree.
     const TreeElement<T>* croot() const { return &_root; }
+
+    /// Mutable pointer to the root of the tree.
     TreeElement<T>* root() { return &_root; }
 
-private:
 
-    friend std::ostream& operator<<(std::ostream& os, const Tree& _this)
-    {
+    friend std::ostream& operator<<(std::ostream& os, const Tree& _this){
         _this.print_impl(os, (_this._root.children()), 0);
         return os;
     }
 
+private:
 
     void print_impl(std::ostream& os, const typename TreeElement<T>::ChildrenVector& children, int indent ) const;
 
@@ -85,6 +126,7 @@ private:
 };
 
 //-----------------------------------------
+
 
 template <typename T> inline
 std::ostream& operator<<(std::ostream &os, const std::pair<const TreeElement<T>*, const TreeElement<T>* >& tail_head )
