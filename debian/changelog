@@ -1,0 +1,24 @@
+ros-kinetic-ros-type-introspection (0.3.1-0xenial) xenial; urgency=high
+
+  * added BSD license
+  * added an alternative implementation of ShapeShifter
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Wed, 19 Oct 2016 22:00:00 -0000
+
+ros-kinetic-ros-type-introspection (0.3.0-0xenial) xenial; urgency=high
+
+  * Doxygen added
+  * Moved to gtests instead of Catch.
+  * Final API (?)
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Sun, 16 Oct 2016 22:00:00 -0000
+
+ros-kinetic-ros-type-introspection (0.2.0-0xenial) xenial; urgency=high
+
+  * All unit tests pass, but coverage is not very high.
+  * By default is uses the custom string implementation.
+  * Stable (?) API
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Sun, 16 Oct 2016 22:00:00 -0000
+
+
