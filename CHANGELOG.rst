@@ -2,6 +2,11 @@
 Changelog for package ros_type_introspection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.4.3 (2017-02-13)
+------------------
+* FIX: bug found in cache. reverting the recent change
+* Contributors: davide
+
 0.4.1 (2017-02-09)
 ------------------
 * COSMETIC: more consistent code
