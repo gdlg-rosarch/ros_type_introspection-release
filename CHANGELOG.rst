@@ -2,6 +2,20 @@
 Changelog for package ros_type_introspection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.5.1 (2017-04-02)
+------------------
+* fix the test
+* fix tests?
+* compilation fix
+* typo fix
+* test fixed
+* Contributors: Davide Faconti
+
+0.5.0 (2017-03-25)
+------------------
+* toStr changed
+* Contributors: Davide Faconti
+
 0.4.3 (2017-02-13)
 ------------------
 * FIX: bug found in cache. reverting the recent change
