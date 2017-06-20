@@ -46,15 +46,6 @@
 namespace RosIntrospection{
 
 
-static const  boost::regex type_regex("[a-zA-Z][a-zA-Z0-9_]*"
-                                      "(/[a-zA-Z][a-zA-Z0-9_]*){0,1}"
-                                      "(\\[[0-9]*\\]){0,1}");
-
-static const  boost::regex field_regex("[a-zA-Z][a-zA-Z0-9_]*");
-
-static const  boost::regex msg_separation_regex("^=+\\n+");
-
-
 inline bool isSeparator(const std::string& line)
 {
     if(line.size() != 80 ) return false;
@@ -122,48 +113,97 @@ ROSType::ROSType(const std::string &name):
 
     if( _msg_name.compare( "bool" ) == 0 ) {
         _id = RosIntrospection::BOOL;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<bool>(buffer);
+        };
     }
     else if(_msg_name.compare( "byte" ) == 0 ) {
         _id = RosIntrospection::BYTE;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<int8_t>(buffer);
+        };
     }
     else if(_msg_name.compare( "char" ) == 0 ) {
         _id = RosIntrospection::CHAR;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<char>(buffer);
+        };
     }
     else if(_msg_name.compare( "uint8" ) == 0 ) {
         _id = RosIntrospection::UINT8;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<uint8_t>(buffer);
+        };
     }
     else if(_msg_name.compare( "uint16" ) == 0 ) {
         _id = RosIntrospection::UINT16;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<uint16_t>(buffer);
+        };
     }
     else if(_msg_name.compare( "uint32" ) == 0 ) {
         _id = RosIntrospection::UINT32;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<uint32_t>(buffer);
+        };
     }
     else if(_msg_name.compare( "uint64" ) == 0 ) {
         _id = RosIntrospection::UINT64;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<uint64_t>(buffer);
+        };
     }
     else if(_msg_name.compare( "int8" ) == 0 ) {
         _id = RosIntrospection::INT8;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<int8_t>(buffer);
+        };
     }
     else if(_msg_name.compare( "int16" ) == 0 ) {
         _id = RosIntrospection::INT16;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<int16_t>(buffer);
+        };
     }
     else if(_msg_name.compare( "int32" ) == 0 ) {
         _id = RosIntrospection::INT32;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<int32_t>(buffer);
+        };
     }
     else if(_msg_name.compare( "int64" ) == 0 ) {
         _id = RosIntrospection::INT64;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<int64_t>(buffer);
+        };
     }
     else if(_msg_name.compare( "float32" ) == 0 ) {
         _id = RosIntrospection::FLOAT32;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<float>(buffer);
+        };
     }
     else if(_msg_name.compare( "float64" ) == 0 ) {
         _id = RosIntrospection::FLOAT64;
+        _deserialize_impl = [](uint8_t** buffer) {
+            return ReadFromBuffer<double>(buffer);
+        };
     }
     else if(_msg_name.compare( "time" ) == 0 ) {
         _id = RosIntrospection::TIME;
+        _deserialize_impl = [](uint8_t** buffer) {
+            double sec  = (double) ReadFromBuffer<uint32_t>(buffer);
+            double nsec = (double) ReadFromBuffer<uint32_t>(buffer);
+            return (double)( sec + nsec*1e-9);
+        };
     }
     else if(_msg_name.compare( "duration" ) == 0 ) {
         _id = RosIntrospection::DURATION;
+        _deserialize_impl = [](uint8_t** buffer) {
+            double sec  = (double) ReadFromBuffer<uint32_t>(buffer);
+            double nsec = (double) ReadFromBuffer<uint32_t>(buffer);
+            return (double)( sec + nsec*1e-9 );
+        };
     }
     else if(_msg_name.compare( "string" ) == 0 ) {
         _id = RosIntrospection::STRING;
@@ -175,6 +215,8 @@ ROSTypeList buildROSTypeMapFromDefinition(
         const std::string & type_name,
         const std::string & msg_definition)
 {
+    static const  boost::regex msg_separation_regex("^=+\\n+");
+
     ROSTypeList type_list;
 
     std::vector<std::string> split;
@@ -272,6 +314,8 @@ BuiltinType ROSType::typeID() const
     return this->_id;
 }
 
+
+
 ROSMessage::ROSMessage(const std::string &msg_def)
 {
     std::istringstream messageDescriptor(msg_def);
@@ -321,6 +365,12 @@ void ROSMessage::updateTypes(const std::vector<ROSType> &all_types)
 
 ROSField::ROSField(const std::string &definition)
 {
+    static const  boost::regex type_regex("[a-zA-Z][a-zA-Z0-9_]*"
+                                          "(/[a-zA-Z][a-zA-Z0-9_]*){0,1}"
+                                          "(\\[[0-9]*\\]){0,1}");
+
+    static const  boost::regex field_regex("[a-zA-Z][a-zA-Z0-9_]*");
+
     using boost::regex;
     std::string::const_iterator begin = definition.begin();
     std::string::const_iterator end   = definition.end();
@@ -334,7 +384,7 @@ ROSField::ROSField(const std::string &definition)
         begin = what[0].second;
     }
     else {
-        throw std::runtime_error("Bad type when parsing message\n" + definition);
+        throw std::runtime_error("Bad type when parsing message ----\n" + definition);
     }
 
     if (regex_search(begin, end, what, field_regex))
@@ -343,7 +393,7 @@ ROSField::ROSField(const std::string &definition)
         begin = what[0].second;
     }
     else {
-        throw std::runtime_error("Bad field when parsing message\n" + definition);
+        throw std::runtime_error("Bad field when parsing message ----\n" + definition);
     }
 
     // Determine next character
@@ -373,7 +423,7 @@ ROSField::ROSField(const std::string &definition)
             // Ignore comment
         } else {
             // Error
-            throw std::runtime_error("Unexpected character after type and field '" +
+            throw std::runtime_error("Unexpected character after type and field  ----\n" +
                                      definition);
         }
     }
