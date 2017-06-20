@@ -38,15 +38,17 @@
 #include <vector>
 #include <map>
 #include <boost/utility/string_ref.hpp>
+#include <ros_type_introspection/builtin_types.hpp>
 #include <ros_type_introspection/string.hpp>
 #include <ros_type_introspection/stringtree.hpp>
+#include <ros_type_introspection/variant.hpp>
 
 namespace RosIntrospection{
 
 
 #if 1
 // Faster, but might need more testing
-typedef ssoX::basic_string< 31, char> SString;
+typedef ssoX::basic_string<char> SString;
 #else
 // slightly slower but safer option. More convenient during debug
 typedef std::string SString;
@@ -54,42 +56,6 @@ typedef std::string SString;
 
 typedef details::TreeElement<SString> StringTreeNode;
 typedef details::Tree<SString> StringTree;
-
-enum BuiltinType {
-  BOOL , BYTE, CHAR,
-  UINT8, UINT16, UINT32, UINT64,
-  INT8, INT16, INT32, INT64,
-  FLOAT32, FLOAT64,
-  TIME, DURATION,
-  STRING, OTHER
-};
-
-inline std::ostream& operator<<(std::ostream& os, const BuiltinType& c)
-{
-  static const char* names[] =
-  {
-    "BOOL" , "BYTE", "CHAR",
-    "UINT8", "UINT16", "UINT32", "UINT64",
-    "INT8", "INT16", "INT32", "INT64",
-    "FLOAT32", "FLOAT64",
-    "TIME", "DURATION",
-    "STRING", "OTHER"
-  };
-
-  os << names[ static_cast<int>(c) ];
-  return os;
-}
-
-
-
-const int BuiltinTypeSize[OTHER] = {
-  1, 1, 1,
-  1, 2, 4, 8,
-  1, 2, 4, 8,
-  4, 8,
-  8, 8,
-  -1
-};
 
 /**
  * @brief Description of a ROS type.
@@ -137,15 +103,33 @@ public:
     return this->baseName() < other.baseName();
   }
 
+  VarNumber deserializeFromBuffer(uint8_t** buffer) const
+  {
+      if(!_deserialize_impl){ return VarNumber(); }
+      else{
+          return _deserialize_impl(buffer);
+      }
+  }
+
 protected:
 
   BuiltinType _id;
-  int         _array_size;
+  int     _array_size;
   SString _base_name;
   SString _msg_name;
   SString _pkg_name;
+  std::function<VarNumber(uint8_t** buffer)> _deserialize_impl;
 
 };
+
+// helper function to deserialize raw memory
+template <typename T> inline T ReadFromBuffer( uint8_t** buffer)
+{
+  T destination =  (*( reinterpret_cast<T*>( *buffer ) ) );
+  *buffer +=  sizeof(T);
+  return (destination);
+}
+
 
 /**
  * @brief A ROSMessage will contain one or more ROSField(s). Each field is little more
