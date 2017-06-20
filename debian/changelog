@@ -1,0 +1,91 @@
+ros-lunar-ros-type-introspection (0.6.0-0stretch) stretch; urgency=high
+
+  * moved the deserializing code
+  * new API
+  * fixing issue in resize (to be tested)
+  * fixed osx compilation failure due to implicit_instantiation of std::array
+  * Fix formating and typos
+  * Contributors: Bo Li, Davide Faconti, Sam Pfeiffer
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Mon, 19 Jun 2017 22:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.5.1-0stretch) stretch; urgency=high
+
+  * fix the test
+  * fix tests?
+  * compilation fix
+  * typo fix
+  * test fixed
+  * Contributors: Davide Faconti
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Sat, 01 Apr 2017 22:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.5.0-0stretch) stretch; urgency=high
+
+  * toStr changed
+  * Contributors: Davide Faconti
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Fri, 24 Mar 2017 23:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.4.3-0stretch) stretch; urgency=high
+
+  * FIX: bug found in cache. reverting the recent change
+  * Contributors: davide
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Sun, 12 Feb 2017 23:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.4.1-0stretch) stretch; urgency=high
+
+  * COSMETIC: more consistent code
+  * considerable speed improvement in applyNameTransform
+  * Contributors: Davide Faconti
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Wed, 08 Feb 2017 23:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.4.0-0stretch) stretch; urgency=high
+
+  * critical bug fixed
+  * remove compilation warnings
+  * Update README.md
+  * Contributors: Davide Faconti
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Sun, 05 Feb 2017 23:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.3.3-0stretch) stretch; urgency=high
+
+  * removed serious bug that might cause double free
+  * Contributors: davide
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Thu, 03 Nov 2016 23:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.3.2-0stretch) stretch; urgency=high
+
+  * fixing tests (EXPECTED_EQ is more informative)
+  * changed the type of ROSType::baseName() and added SString::toStdString()
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Tue, 25 Oct 2016 22:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.3.1-0stretch) stretch; urgency=high
+
+  * added BSD license
+  * added an alternative implementation of ShapeShifter
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Wed, 19 Oct 2016 22:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.3.0-0stretch) stretch; urgency=high
+
+  * Doxygen added
+  * Moved to gtests instead of Catch.
+  * Final API (?)
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Sun, 16 Oct 2016 22:00:00 -0000
+
+ros-lunar-ros-type-introspection (0.2.0-0stretch) stretch; urgency=high
+
+  * All unit tests pass, but coverage is not very high.
+  * By default is uses the custom string implementation.
+  * Stable (?) API
+
+ -- Davide Faconti <faconti@icarustechnology.com>  Sun, 16 Oct 2016 22:00:00 -0000
+
+
