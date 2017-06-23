@@ -37,6 +37,7 @@
 
 #include <vector>
 #include <map>
+#include <boost/function.hpp>
 #include <boost/utility/string_ref.hpp>
 #include <ros_type_introspection/builtin_types.hpp>
 #include <ros_type_introspection/string.hpp>
@@ -118,7 +119,7 @@ protected:
   SString _base_name;
   SString _msg_name;
   SString _pkg_name;
-  std::function<VarNumber(uint8_t** buffer)> _deserialize_impl;
+  boost::function<VarNumber(uint8_t** buffer)> _deserialize_impl;
 
 };
 
