@@ -35,7 +35,7 @@
 #ifndef ROS_INTROSPECTION_RENAMER_H
 #define ROS_INTROSPECTION_RENAMER_H
 
-#include <ros_type_introspection/deserializer.hpp>
+#include "ros_type_introspection/deserializer.hpp"
 
 namespace RosIntrospection{
 
@@ -124,8 +124,11 @@ private:
 
 typedef std::map< std::string, std::vector< RosIntrospection::SubstitutionRule > > SubstitutionRuleMap;
 
+typedef std::vector< std::pair<std::string, VarNumber>> RenamedValues;
+
 void applyNameTransform(const std::vector<SubstitutionRule> &rules,
-                        ROSTypeFlat* container);
+                        const ROSTypeFlat& container_source,
+                        RenamedValues& renamed_destination );
 
 
 } //end namespace
