@@ -39,8 +39,8 @@
 #include <deque>
 #include <iostream>
 #include <boost/container/stable_vector.hpp>
-#include <ros_type_introspection/string.hpp>
 #include <boost/noncopyable.hpp>
+#include "ros_type_introspection/string.hpp"
 
 namespace RosIntrospection {
 
@@ -75,8 +75,6 @@ public:
     ChildrenVector& children()              { return _children; }
 
     void addChild(const T& child );
-
-    std::string toStr() const;
 
     bool isLeaf() const { return _children.empty(); }
 
