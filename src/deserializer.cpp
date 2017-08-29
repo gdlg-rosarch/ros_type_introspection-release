@@ -32,8 +32,9 @@
 *  POSSIBILITY OF SUCH DAMAGE.
 ********************************************************************/
 
-#include <ros_type_introspection/deserializer.hpp>
 #include <functional>
+#include "ros_type_introspection/deserializer.hpp"
+
 
 namespace RosIntrospection{
 
@@ -190,7 +191,6 @@ void buildRosFlatType(const ROSTypeList& type_map,
   flat_container_output->tree.root()->value() = prefix;
   flat_container_output->name.clear();
   flat_container_output->value.clear();
-  flat_container_output->renamed_value.clear();
 
   StringTreeLeaf rootnode;
   rootnode.node_ptr = flat_container_output->tree.root();
@@ -208,45 +208,40 @@ StringTreeLeaf::StringTreeLeaf(): node_ptr(nullptr), array_size(0)
 
 
 
-// The idea comes from the talk by Alexandrescu
-// "Three Optimization Tips for C++".
 
-// much faster for numbers below 100
-inline int print_number(char* buffer, uint16_t value)
+bool StringTreeLeaf::toStr(SString& destination) const
 {
-    const char DIGITS[] =
-            "00010203040506070809"
-            "10111213141516171819"
-            "20212223242526272829"
-            "30313233343536373839"
-            "40414243444546474849"
-            "50515253545556575859"
-            "60616263646566676869"
-            "70717273747576777879"
-            "80818283848586878889"
-            "90919293949596979899";
-    if (value < 10)
-    {
-        buffer[0] = static_cast<char>('0' + value);
-        return 1;
-    }
-    else if (value < 100) {
-        value *= 2;
-        buffer[0] = DIGITS[ value+1 ];
-        buffer[1] = DIGITS[ value ];
-        return 2;
-    }
-    else{
-        return sprintf( buffer,"%d", value );
-    }
+  char buffer[512];
+  int offset = this->toStr(buffer);
+
+  if( offset < 0 ) {
+    destination.clear();
+    return false;
+  }
+  destination.assign(buffer, offset);
+  return true;
 }
 
-void StringTreeLeaf::toStr(SString& destination) const
+bool StringTreeLeaf::toStr(std::string& destination) const
+{
+  char buffer[512];
+  int offset = this->toStr(buffer);
+
+  if( offset < 0 ) {
+    destination.clear();
+    return false;
+  }
+  destination.assign(buffer, offset);
+  return true;
+}
+
+int StringTreeLeaf::toStr(char* buffer) const
 {
 
   const StringTreeNode* leaf_node = this->node_ptr;
-
-  if( !leaf_node ) return destination.clear();
+  if( !leaf_node ){
+    return -1;
+  }
 
   const StringTreeNode* nodes_from_leaf_to_root[64];
   int index = 0;
@@ -265,8 +260,6 @@ void StringTreeLeaf::toStr(SString& destination) const
   index--;
 
   int array_count = 0;
-
-  char buffer[256];
   int off = 0;
 
   while ( index >=0 )
@@ -288,7 +281,7 @@ void StringTreeLeaf::toStr(SString& destination) const
     index--;
   }
   buffer[off] = '\0';
-  destination.assign(buffer, off);
+  return off;  
 }
 
 
