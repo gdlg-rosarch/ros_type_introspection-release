@@ -32,7 +32,6 @@
 *  POSSIBILITY OF SUCH DAMAGE.
 ********************************************************************/
 
-#include <ros_type_introspection/parser.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/utility/string_ref.hpp>
 #include <boost/lexical_cast.hpp>
@@ -42,6 +41,9 @@
 #include <functional>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/regex.hpp>
+
+#include "ros_type_introspection/parser.hpp"
+
 
 namespace RosIntrospection{
 
@@ -192,17 +194,19 @@ ROSType::ROSType(const std::string &name):
     else if(_msg_name.compare( "time" ) == 0 ) {
         _id = RosIntrospection::TIME;
         _deserialize_impl = [](uint8_t** buffer) {
-            double sec  = (double) ReadFromBuffer<uint32_t>(buffer);
-            double nsec = (double) ReadFromBuffer<uint32_t>(buffer);
-            return (double)( sec + nsec*1e-9);
+            ros::Time tmp;
+            tmp.sec  = ReadFromBuffer<uint32_t>(buffer);
+            tmp.nsec = ReadFromBuffer<uint32_t>(buffer);
+            return tmp;
         };
     }
     else if(_msg_name.compare( "duration" ) == 0 ) {
         _id = RosIntrospection::DURATION;
         _deserialize_impl = [](uint8_t** buffer) {
-            double sec  = (double) ReadFromBuffer<uint32_t>(buffer);
-            double nsec = (double) ReadFromBuffer<uint32_t>(buffer);
-            return (double)( sec + nsec*1e-9 );
+            ros::Time tmp;
+            tmp.sec  = ReadFromBuffer<int32_t>(buffer);
+            tmp.nsec = ReadFromBuffer<int32_t>(buffer);
+            return tmp;
         };
     }
     else if(_msg_name.compare( "string" ) == 0 ) {
