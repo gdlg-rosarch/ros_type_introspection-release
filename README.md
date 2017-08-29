@@ -1,3 +1,26 @@
+## ros_type_introspection (indigo) - 0.7.1-0
+
+The packages in the `ros_type_introspection` repository were released into the `indigo` distro by running `/usr/bin/bloom-release --track indigo --rosdistro indigo ros_type_introspection` on `Tue, 29 Aug 2017 06:16:16 -0000`
+
+The `ros_type_introspection` package was released.
+
+Version of package(s) in repository `ros_type_introspection`:
+
+- upstream repository: https://github.com/facontidavide/ros_type_introspection.git
+- release repository: https://github.com/facontidavide/ros_type_introspection-release.git
+- rosdistro version: `0.6.3-0`
+- old version: `0.6.3-0`
+- new version: `0.7.1-0`
+
+Versions of tools used:
+
+- bloom version: `0.5.26`
+- catkin_pkg version: `0.3.6`
+- rosdep version: `0.11.8`
+- rosdistro version: `0.6.2`
+- vcstools version: `0.1.39`
+
+
 ## ros_type_introspection (lunar) - 0.7.1-0
 
 The packages in the `ros_type_introspection` repository were released into the `lunar` distro by running `/usr/bin/bloom-release --track lunar --rosdistro lunar ros_type_introspection` on `Tue, 29 Aug 2017 06:11:03 -0000`
