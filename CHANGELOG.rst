@@ -2,6 +2,11 @@
 Changelog for package ros_type_introspection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.8.0 (2017-08-30)
+------------------
+* fixing a serious issue with vectors which are too large
+* Contributors: Davide Faconti
+
 0.7.1 (2017-08-29)
 ------------------
 * ros Time and Duration fixed
