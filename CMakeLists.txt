@@ -3,6 +3,7 @@ project(ros_type_introspection)
 
 find_package(Boost REQUIRED COMPONENTS regex)
 
+
 find_package(catkin REQUIRED COMPONENTS 
    roscpp 
    rostime 
@@ -10,6 +11,9 @@ find_package(catkin REQUIRED COMPONENTS
    rosbag 
    rosbag_storage 
    roscpp_serialization
+   sensor_msgs
+   geometry_msgs
+   abseil_cpp
 )
 
 # Build flags
@@ -34,6 +38,7 @@ catkin_package(
    rosbag 
    rosbag_storage 
    roscpp_serialization
+   abseil_cpp
    DEPENDS 
 )
 
@@ -45,35 +50,47 @@ catkin_package(
 ## Your package locations should be listed before other locations
 
 include_directories(
-  ${catkin_INCLUDE_DIRS}
-  include
+    include
+    ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
  add_library(ros_type_introspection
-   src/parser.cpp
-   src/deserializer.cpp
-   src/renamer.cpp
 
-   include/ros_type_introspection/parser.hpp
-   include/ros_type_introspection/deserializer.hpp
-   include/ros_type_introspection/string.hpp
-   include/ros_type_introspection/renamer.hpp
-   include/ros_type_introspection/stringtree.hpp
+   src/ros_type.cpp
+   src/ros_field.cpp
+   src/stringtree_leaf.cpp
+   src/ros_message.cpp
+   src/substitution_rule.cpp
+
+   src/ros_introspection.cpp
  )
 
 target_link_libraries(ros_type_introspection ${catkin_LIBRARIES})
 
-## Declare a C++ executable
-#add_executable(ros_introspection_benchmark src/benchmark.cpp)
-#add_dependencies(ros_introspection_benchmark
-#    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-#    ${catkin_EXPORTED_TARGETS})
 
-#target_link_libraries(ros_introspection_benchmark
-# ${catkin_LIBRARIES}
-#  ros_type_introspection
-#)
+find_package(benchmark CONFIG)
+if (benchmark_FOUND)
+
+add_executable(ros_introspection_benchmark src/tests/benchmark.cpp)
+add_dependencies(ros_introspection_benchmark
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
+    ${catkin_EXPORTED_TARGETS})
+
+target_link_libraries(ros_introspection_benchmark
+ ${catkin_LIBRARIES}
+  ros_type_introspection
+  benchmark
+)
+
+endif(benchmark_FOUND)
+
+add_executable(rosbag_example          example/rosbag_example.cpp)
+target_link_libraries(rosbag_example   ${catkin_LIBRARIES} ros_type_introspection)
+
+add_executable(subscribe_example        example/subscribe_example.cpp)
+target_link_libraries(subscribe_example ${catkin_LIBRARIES} ros_type_introspection
+)
 
 
 #############
