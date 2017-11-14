@@ -1,3 +1,26 @@
+## ros_type_introspection (kinetic) - 1.0.1-0
+
+The packages in the `ros_type_introspection` repository were released into the `kinetic` distro by running `/usr/bin/bloom-release ros_type_introspection --track kinetic --rosdistro kinetic` on `Tue, 14 Nov 2017 15:58:36 -0000`
+
+The `ros_type_introspection` package was released.
+
+Version of package(s) in repository `ros_type_introspection`:
+
+- upstream repository: https://github.com/facontidavide/ros_type_introspection.git
+- release repository: https://github.com/facontidavide/ros_type_introspection-release.git
+- rosdistro version: `1.0.0-0`
+- old version: `1.0.0-0`
+- new version: `1.0.1-0`
+
+Versions of tools used:
+
+- bloom version: `0.6.0`
+- catkin_pkg version: `0.3.8`
+- rosdep version: `0.11.8`
+- rosdistro version: `0.6.2`
+- vcstools version: `0.1.39`
+
+
 ## ros_type_introspection (lunar) - 1.0.0-0
 
 The packages in the `ros_type_introspection` repository were released into the `lunar` distro by running `/usr/bin/bloom-release --rosdistro lunar --track lunar ros_type_introspection` on `Thu, 12 Oct 2017 16:13:06 -0000`
