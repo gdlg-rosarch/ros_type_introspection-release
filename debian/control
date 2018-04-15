@@ -1,0 +1,12 @@
+Source: ros-indigo-ros-type-introspection
+Section: misc
+Priority: extra
+Maintainer: Davide Faconti <faconti@icarustechnology.com>
+Build-Depends: debhelper (>= 9.0.0), ros-indigo-abseil-cpp, ros-indigo-catkin, ros-indigo-roscpp, ros-indigo-roscpp-serialization, ros-indigo-rostime
+Homepage: http://www.ros.org/wiki/ros_type_introspection
+Standards-Version: 3.9.2
+
+Package: ros-indigo-ros-type-introspection
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ros-indigo-abseil-cpp, ros-indigo-roscpp, ros-indigo-roscpp-serialization, ros-indigo-rostime
+Description: The ros_type_introspection package allows the user to parse and deserialize ROS messages which type is unknown at compilation time.
