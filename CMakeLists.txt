@@ -7,12 +7,7 @@ find_package(Boost REQUIRED COMPONENTS regex)
 find_package(catkin REQUIRED COMPONENTS 
    roscpp 
    rostime 
-   topic_tools 
-   rosbag 
-   rosbag_storage 
    roscpp_serialization
-   sensor_msgs
-   geometry_msgs
    abseil_cpp
 )
 
@@ -34,9 +29,6 @@ catkin_package(
    CATKIN_DEPENDS 
    roscpp 
    rostime 
-   topic_tools 
-   rosbag 
-   rosbag_storage 
    roscpp_serialization
    abseil_cpp
    DEPENDS 
@@ -62,35 +54,10 @@ include_directories(
    src/stringtree_leaf.cpp
    src/ros_message.cpp
    src/substitution_rule.cpp
-
    src/ros_introspection.cpp
  )
 
 target_link_libraries(ros_type_introspection ${catkin_LIBRARIES})
-
-
-find_package(benchmark CONFIG)
-if (benchmark_FOUND)
-
-add_executable(ros_introspection_benchmark src/tests/benchmark.cpp)
-add_dependencies(ros_introspection_benchmark
-    ${${PROJECT_NAME}_EXPORTED_TARGETS}
-    ${catkin_EXPORTED_TARGETS})
-
-target_link_libraries(ros_introspection_benchmark
- ${catkin_LIBRARIES}
-  ros_type_introspection
-  benchmark
-)
-
-endif(benchmark_FOUND)
-
-add_executable(rosbag_example          example/rosbag_example.cpp)
-target_link_libraries(rosbag_example   ${catkin_LIBRARIES} ros_type_introspection)
-
-add_executable(subscribe_example        example/subscribe_example.cpp)
-target_link_libraries(subscribe_example ${catkin_LIBRARIES} ros_type_introspection
-)
 
 
 #############
@@ -108,7 +75,6 @@ install(TARGETS ros_type_introspection
    RUNTIME DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
  )
 
-
 ## Mark cpp header files for installation
 install(DIRECTORY include/${PROJECT_NAME}/
    DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
@@ -116,21 +82,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
    PATTERN ".git" EXCLUDE
 )
 
-
 #############
 ## Testing ##
 #############
-if(CATKIN_ENABLE_TESTING)
 
- catkin_add_gtest(ros_introspection_test
-     src/tests/parser_test.cpp
-     src/tests/deserializer_test.cpp
-     src/tests/renamer_test.cpp
-     )
-
- target_link_libraries(ros_introspection_test
-   ${catkin_LIBRARIES} boost_regex
-   ros_type_introspection
-   )
-
-endif()
