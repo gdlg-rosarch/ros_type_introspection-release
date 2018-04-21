@@ -2,18 +2,6 @@
 Changelog for package ros_type_introspection
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.1.1 (2018-04-15)
-------------------
-* split the project into two packages to reduce dependencies
-* Contributors: Davide Faconti
-
-1.1.0 (2018-03-22)
-------------------
-* critical bug fix
-* fixed compilation of test
-* remove potential problem in other projects
-* Contributors: Davide Faconti
-
 1.0.2 (2018-02-08)
 ------------------
 * fixing issue with blobs (detected when parsing sensor_msgs::Image)
